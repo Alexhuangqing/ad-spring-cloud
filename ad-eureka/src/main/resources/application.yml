@@ -1,0 +1,70 @@
+#
+#spring:
+#  profiles:
+#    active: server2
+#
+#---
+##单节点服务发现与注册 localhost
+spring:
+  application:
+    name: ad-eureka
+
+server:
+  port: 8000
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    fetch-registry: false                    #同步其他eurekaServer的数据
+    register-with-eureka: false              #是否将自己注册到eurekaServer中
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  #该节点向其他节点的注册地址
+
+---
+#多节点eureka服务发现与注册 server1
+spring:
+  application:
+    name: ad-eureka
+  profiles: server1                        #配置文件的环境
+server:
+  port: 8000
+eureka:
+  instance:
+    hostname: server1                     #该节点服务器的主机名
+    prefer-ip-address: false              #用同一台服务器ip地址注册，会注册失败，同一台服务器模拟集群，选用主机名注册
+  client:
+    service-url:
+      defaultZone: http://server2:8001/eureka/,http://server3:8002/eureka/  #该节点向其他节点的注册地址
+
+---
+#多节点eureka服务发现与注册 server2
+spring:
+  application:
+    name: ad-eureka
+  profiles: server2
+server:
+  port: 8001
+eureka:
+  instance:
+    hostname: server2
+    prefer-ip-address: false
+  client:
+    service-url:
+      defaultZone: http://server1:8000/eureka/,http://server3:8002/eureka/
+
+---
+#多节点eureka服务发现与注册 server3
+spring:
+  application:
+    name: ad-eureka
+  profiles: server3
+server:
+  port: 8002
+eureka:
+  instance:
+    hostname: server3
+    prefer-ip-address: false
+  client:
+    service-url:
+      defaultZone: http://server1:8000/eureka/,http://server2:8001/eureka/
