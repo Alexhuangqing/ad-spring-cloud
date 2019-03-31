@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdCreativeUnitTable {
-
+    /*创意id*/
     private Long adId;
+    /*广告单元id*/
     private Long unitId;
 }

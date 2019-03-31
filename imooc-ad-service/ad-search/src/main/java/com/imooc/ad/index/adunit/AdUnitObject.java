@@ -1,7 +1,9 @@
 package com.imooc.ad.index.adunit;
 
 import com.imooc.ad.index.adplan.AdPlanObject;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AdUnitObject {
     private Long unitId;
     private Integer unitStatus;

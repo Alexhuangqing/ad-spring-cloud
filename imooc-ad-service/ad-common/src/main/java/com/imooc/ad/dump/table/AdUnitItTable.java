@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdUnitItTable {
-
+    /*推广单元的id*/
     private Long unitId;
+    /*关联的用户标签*/
     private String itTag;
 }

@@ -13,10 +13,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdPlanTable {
-
+    /*自增主键*/
     private Long id;
+    /*用户id*/
     private Long userId;
+    /*推广计划状态*/
     private Integer planStatus;
+    /*推广计划开始时间*/
     private Date startDate;
+    /*推广计划结束时间*/
     private Date endDate;
 }

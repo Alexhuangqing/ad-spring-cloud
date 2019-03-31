@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdUnitKeywordTable {
-
+    /*推广单元的id*/
     private Long unitId;
+    /*推广单元的关键词*/
     private String keyword;
 }
