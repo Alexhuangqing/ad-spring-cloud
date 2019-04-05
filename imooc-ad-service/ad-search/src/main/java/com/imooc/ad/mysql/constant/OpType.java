@@ -4,7 +4,10 @@ import com.github.shyiko.mysql.binlog.event.EventType;
 
 /**
  * @Author Alex
- * @Desc <p></p>
+ * @Desc
+ * <p>
+ *     枚举类型，对应3种操作指令
+ * </p>
  * @Date 2019/3/30 16:55
  */
 public enum OpType {
