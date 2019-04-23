@@ -14,7 +14,10 @@ import java.util.List;
  */
 @Data
 public class Template {
-
+    /*数据库名称*/
     private String database;
+    /*库中的列表*/
     private List<JsonTable> tableList;
+
+
 }

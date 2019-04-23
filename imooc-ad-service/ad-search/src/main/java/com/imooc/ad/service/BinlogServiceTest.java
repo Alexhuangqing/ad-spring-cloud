@@ -2,7 +2,11 @@ package com.imooc.ad.service;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.*;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author Alex
@@ -35,8 +39,18 @@ public class BinlogServiceTest {
                 log.info("insert info:{}", data);
             } else if (data instanceof DeleteRowsEventData) {
                 log.info("delete info:{}", data);
+            }else if( data instanceof TableMapEventData){
+                log.info("TableMapEventData info:{}", data);
             }
         });
+
+
+        /**
+         *  TableMapEventData{tableId=102, database='imooc_ad_data', table='ad_unit_keyword', columnTypes=3, 3, 15, columnMetadata=0, 0, 90, columnNullability={}}
+         *  UpdateRowsEventData{tableId=102, includedColumnsBeforeUpdate={0, 1, 2}, includedColumns={0, 1, 2}, rows=[
+         *     {before=[1, 1, 李四], after=[1, 1, 王五]}
+         * ]}
+         */
         client.connect();
     }
 }

@@ -26,7 +26,7 @@ public class ParseTable {
      *     UPDATE,
      *     DELETE,
      *     OTHER;
-     * ====》对应的操作列
+     * ====》该表定义的枚举类型所对应的操作列
      */
     private Map<OpType, List<String>> opTypeFieldSetMap = new HashMap<>();
 
@@ -53,7 +53,14 @@ public class ParseTable {
      *      ]}
      *
      *
+     *       TableMapEventData{tableId=102, database='imooc_ad_data', table='ad_unit_keyword', columnTypes=3, 3, 15, columnMetadata=0, 0, 90, columnNullability={}}
+     *       UpdateRowsEventData{tableId=102, includedColumnsBeforeUpdate={0, 1, 2}, includedColumns={0, 1, 2}, rows=[
+     *          {before=[1, 1, 李四], after=[1, 1, 王五]}
+     *        ]}
+     *      mysql-binlog-connector-java 开源软件索引与表中实际列名之间的映射
      *
      */
     private Map<Integer,String> indexColumnMap =  new HashMap<>();
+
+
 }
