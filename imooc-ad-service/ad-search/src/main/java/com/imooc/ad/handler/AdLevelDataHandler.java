@@ -1,5 +1,6 @@
 package com.imooc.ad.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.imooc.ad.dump.table.*;
 import com.imooc.ad.index.DataTable;
 import com.imooc.ad.index.IndexAware;
@@ -38,7 +39,7 @@ import java.util.Set;
 public class AdLevelDataHandler {
 
 
-
+    //     维护二级索引
      public static void handleLevel2(AdPlanTable adPlanTable,OpType opType){
 
          AdPlanObject adPlanObject = new AdPlanObject(
@@ -100,10 +101,44 @@ public class AdLevelDataHandler {
                  adUnitObject,
                  opType
          );
-
-
      }
+//     维护三级索引
+    public static void handleLevel3(AdCreativeUnitTable creativeUnitTable,
+                                    OpType type) {
+        if (type == OpType.UPDATE) {
+            log.error("CreativeUnitIndex not support update");
+            return;
+        }
 
+        AdUnitObject unitObject = DataTable.of(
+                AdUnitIndex.class
+        ).get(creativeUnitTable.getUnitId());
+        CreativeObject creativeObject = DataTable.of(
+                CreativeIndex.class
+        ).get(creativeUnitTable.getAdId());
+
+        if (null == unitObject || null == creativeObject) {
+            log.error("AdCreativeUnitTable index error: {}",
+                    JSON.toJSONString(creativeUnitTable));
+            return;
+        }
+
+        CreativeUnitObject creativeUnitObject = new CreativeUnitObject(
+                creativeUnitTable.getAdId(),
+                creativeUnitTable.getUnitId()
+        );
+        handleBinlogEvent(
+                DataTable.of(CreativeUnitIndex.class),
+                CommonUtil.stringConcat(
+                        creativeUnitObject.getAdId().toString(),
+                        creativeUnitObject.getUnitId().toString()
+                ),
+                creativeUnitObject,
+                type
+        );
+    }
+
+    //     维护四级索引
     public static void handleLevel4(AdUnitKeywordTable adUnitKeywordTable, OpType opType){
 
          if(OpType.UPDATE.equals(opType)){
@@ -200,39 +235,6 @@ public class AdLevelDataHandler {
     }
 
 
-    public static void handleLevel4(AdCreativeUnitTable adCreativeUnitTable, OpType opType) {
-        if (OpType.UPDATE.equals(opType)) {
-            log.error("CreativeUnitIndex unSupport handle update");
-            return;
-        }
-
-        Long unitId = adCreativeUnitTable.getUnitId();
-        AdUnitObject adUnitObject = DataTable.of(
-                AdUnitIndex.class
-        ).get(unitId);
-        if (adUnitObject == null) {
-            log.error("AdUnitIndex not found unitId:{}", unitId);
-            return;
-        }
-
-        CreativeUnitObject creativeUnitObject = new CreativeUnitObject(
-                adCreativeUnitTable.getAdId(),
-                adCreativeUnitTable.getUnitId()
-        );
-
-        String key = CommonUtil.stringConcat(
-                creativeUnitObject.getAdId().toString(),
-                creativeUnitObject.getUnitId().toString()
-                );
-
-        handleBinlogEvent(
-                DataTable.of(CreativeUnitIndex.class),
-                key,
-                creativeUnitObject,
-                opType
-        );
-
-    }
 
     /**
      * 内存的索引维护

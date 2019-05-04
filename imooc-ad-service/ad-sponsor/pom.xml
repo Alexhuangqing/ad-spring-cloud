@@ -16,6 +16,7 @@
     <artifactId>ad-sponsor</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <description>广告投放系统</description>
 
     <dependencies>
         <!-- 引入 Web 功能 -->

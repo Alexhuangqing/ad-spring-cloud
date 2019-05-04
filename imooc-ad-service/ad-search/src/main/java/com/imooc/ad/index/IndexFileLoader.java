@@ -80,7 +80,7 @@ public class IndexFileLoader {
                 DConstant.DATA_ROOT_DIR,
                 DConstant.AD_CREATIVE_UNIT));
         adCreativeUnits.forEach(adCreativeUnit->
-            AdLevelDataHandler.handleLevel4(
+            AdLevelDataHandler.handleLevel3(
                     JSON.parseObject(adCreativeUnit, AdCreativeUnitTable.class),
                     OpType.ADD
             )

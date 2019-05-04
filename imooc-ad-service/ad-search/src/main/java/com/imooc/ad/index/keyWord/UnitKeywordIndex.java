@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -85,9 +86,7 @@ public class UnitKeywordIndex implements IndexAware<String, Set<Long>> {
      * @param value
      * @return
      */
-    public boolean match(Long unitId, Set<String> value){
-
-
+    public boolean match(Long unitId, List<String> value){
         if (unitKeywordMap.containsKey(unitId)
             && CollectionUtils.isNotEmpty(unitKeywordMap.get(unitId))) {
             Set<String> keywords = unitKeywordMap.get(unitId);

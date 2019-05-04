@@ -1,13 +1,13 @@
 package com.imooc.ad.index.creativeunit;
 
 import com.imooc.ad.index.IndexAware;
+import com.imooc.ad.index.adunit.AdUnitObject;
 import com.imooc.ad.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -93,5 +93,19 @@ public class CreativeUnitIndex implements IndexAware<String,CreativeUnitObject> 
 
         log.info("delete after:{}",objectMap);
 
+    }
+
+    public List<Long> selectAds(List<AdUnitObject> adUnitObjects) {
+        if(CollectionUtils.isEmpty(adUnitObjects)){
+            return Collections.emptyList();
+        }
+        List<Long>  adIds = new ArrayList<>();
+        adUnitObjects.forEach(unitObject->{
+            Set<Long> ids = unitCreativeMap.get(unitObject.getUnitId());
+            if(CollectionUtils.isNotEmpty(ids)){
+                adIds.addAll(ids);
+            }
+        });
+        return adIds;
     }
 }

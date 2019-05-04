@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -60,5 +59,19 @@ public class CreativeIndex implements IndexAware<Long, CreativeObject> {
         log.info("before delete: {}", objectMap);
         objectMap.remove(key);
         log.info("after delete: {}", objectMap);
+    }
+
+    public List<CreativeObject> fetch(List<Long> adIds) {
+        if (CollectionUtils.isEmpty(adIds)) {
+            return Collections.emptyList();
+        }
+        List<CreativeObject> results = new ArrayList<>();
+        for (Long adId : adIds) {
+            CreativeObject creativeObject = objectMap.get(adId);
+            if (creativeObject != null) {
+                results.add(creativeObject);
+            }
+        }
+        return results;
     }
 }

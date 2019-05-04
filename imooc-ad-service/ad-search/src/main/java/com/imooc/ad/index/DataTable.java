@@ -14,7 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author Alex
  * @Desc
  * <p>
- * 统一管理所有的bean实例
+ *
+ * 通过ApplicationContextAware 与 PriorityOrdered
+ * 初始化一个异步容器
  *
  * </p>
  * @Date 2019/3/30 15:41
@@ -66,8 +68,8 @@ public class DataTable implements ApplicationContextAware, PriorityOrdered {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> T  beanName(String beanNmae){
-        return (T)applicationContext.getBean(beanNmae);
+    private static <T> T  beanName(String beanName){
+        return (T)applicationContext.getBean(beanName);
     }
 
 

@@ -94,6 +94,7 @@ public class TemplateHolder {
                     new Object[]{parseTemplate.getDatabase(),
                             parseTable.getTableName()
                     }, (rs, i) -> {
+                        //处理元数据结果集
                         log.info("index:{} , rs:{}",i,rs);
                         String column = rs.getString("COLUMN_NAME");
                         int pos = rs.getInt("ORDINAL_POSITION");//pos是从1开始

@@ -1,17 +1,23 @@
 package com.imooc.ad.mysql.listener;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
-import com.github.shyiko.mysql.binlog.event.Event;
-import com.github.shyiko.mysql.binlog.event.EventData;
-import com.github.shyiko.mysql.binlog.event.EventType;
-import com.github.shyiko.mysql.binlog.event.TableMapEventData;
+import com.github.shyiko.mysql.binlog.event.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.imooc.ad.mysql.TemplateHolder;
 import com.imooc.ad.mysql.dto.BinlogRowData;
+import com.imooc.ad.mysql.dto.ParseTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author Alex
@@ -29,6 +35,14 @@ public class AggregationListener implements BinaryLogClient.EventListener {
     private String tbName;
 
     private Map<String, IListener> listenerMap = new HashMap<>();
+
+    private final TemplateHolder templateHolder;
+
+    @Autowired
+    public AggregationListener(TemplateHolder templateHolder) {
+        this.templateHolder = templateHolder;
+    }
+
 
     //该监听事件会不会被注册的实例消费？
     @Override
@@ -81,13 +95,49 @@ public class AggregationListener implements BinaryLogClient.EventListener {
     }
 
     /**
-     * 获取消费自定义数据结构
+     * 封转EventData数据
      * @param data
      * @return
      */
     private BinlogRowData buildRowData(EventData data) {
-        return null;
+        BinlogRowData binlogRowData = new BinlogRowData();
+        ParseTable table = templateHolder.getTable(tbName);
+        Map<Integer, String> indexColumnMap = table.getIndexColumnMap();
+        binlogRowData.setParseTable(templateHolder.getTable(tbName));
+        List<Map<String,String>> mapList = Lists.newArrayList();
+        //每一行数据进行过滤与筛选
+        for(Serializable[] ser:getAfterList(data)){
+            for (int i = 0; i < ser.length; i++) {
+                String columnName = indexColumnMap.get(i);
+                if(StringUtils.isNotEmpty(columnName)){
+                    Map<String, String> map = Maps.newHashMap();
+                    map.put(columnName, ser[i].toString());
+                    mapList.add(map);
+               }
+            }
+        }
+        binlogRowData.setAfter(mapList);
+        return binlogRowData;
     }
+
+
+    private  List<Serializable[]> getAfterList(EventData data) {
+        if(data instanceof DeleteRowsEventData){
+            return ((DeleteRowsEventData) data).getRows();
+        }
+
+        if(data instanceof WriteRowsEventData){
+            return ((WriteRowsEventData) data).getRows();
+        }
+
+        if(data  instanceof  UpdateRowsEventData){
+            return ((UpdateRowsEventData) data).getRows()
+                    .stream().map(Map.Entry::getValue)//value 是更新后的数据
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
 
     /**
      * 为观察者提供注册功能

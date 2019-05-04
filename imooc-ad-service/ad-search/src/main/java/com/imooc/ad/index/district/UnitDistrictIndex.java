@@ -95,7 +95,7 @@ public class UnitDistrictIndex implements IndexAware<String, Set<Long>> {
             Set<String> unitDistricts = unitDistrictMap.get(adUnitId);
 
             List<String> targetDistricts = districts.stream()
-                    .map  (
+                    .map(
                             d -> CommonUtil.stringConcat(
                                     d.getProvince(), d.getCity()
                             )

@@ -47,9 +47,21 @@ public class BinlogServiceTest {
 
         /**
          *  TableMapEventData{tableId=102, database='imooc_ad_data', table='ad_unit_keyword', columnTypes=3, 3, 15, columnMetadata=0, 0, 90, columnNullability={}}
-         *  UpdateRowsEventData{tableId=102, includedColumnsBeforeUpdate={0, 1, 2}, includedColumns={0, 1, 2}, rows=[
-         *     {before=[1, 1, 李四], after=[1, 1, 王五]}
-         * ]}
+         *  UpdateRowsEventData
+         *  {
+         *  tableId=102,
+         *  includedColumnsBeforeUpdate={0, 1, 2},
+         *  includedColumns={0, 1, 2},
+         *  rows=[{before=[1, 1, 李四], after=[1, 1, 王五]}]
+         *  }
+         */
+
+        /**
+         *  WriteRowsEventData{
+         *  tableId=85,
+         *  includedColumns={0, 1, 2},
+         *  rows=[[10, 10, 宝马]]
+         *  }
          */
         client.connect();
     }

@@ -17,7 +17,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchResponse {
-
+    //每个广告位编码对应一组创意，是一系列 k-v键值对
     public Map<String, List<Creative>> adSlot2Ads = new HashMap<>();
 
     @Data
@@ -40,6 +40,11 @@ public class SearchResponse {
                 Arrays.asList("www.imooc.com", "www.imooc.com");
     }
 
+    /**
+     * 将CreativeObject转化为要响应的creative记录
+     * @param object
+     * @return
+     */
     public static Creative convert(CreativeObject object) {
 
         Creative creative = new Creative();
