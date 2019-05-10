@@ -55,7 +55,7 @@ public class SearchController {
     @PostMapping("/getAdPlansByRibbon")
     public CommonResponse<List<AdPlan>> getAdPlansByRebbon(@RequestBody AdPlanGetRequest request){
 
-        return  restTemplate.postForEntity("http://eureka-client-ad-sponsor/get/adPlan"
+        return  restTemplate.postForEntity("http://  -client-ad-sponsor/get/adPlan"
                 ,request
         ,CommonResponse.class).getBody();
     }
